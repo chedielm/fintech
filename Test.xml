@@ -1,0 +1,146 @@
+<xml>
+  <!-- Initial Setup: Define constants and variables -->
+  <variables>
+    <variable name="Initial Amount" value="10"/> <!-- Fixed bet amount -->
+    <variable name="Win Amount" value="5"/>     <!-- Amount to win per trade -->
+    <variable name="Total Profit" value="0"/>   <!-- Tracks total profit -->
+    <variable name="Expected Profit" value="50"/> <!-- Target profit to stop trading -->
+    <variable name="Total Losses" value="0"/>   <!-- Tracks total losses -->
+    <variable name="JlhLos" value="0"/> <!-- Tracks losses (used for logic in original code) -->
+    <variable name="slos" value="TRUE"/> <!-- Some condition flag (from original code) -->
+  </variables>
+
+  <!-- Main Trading Loop -->
+  <block type="controls_while" id="mainLoop" x="193" y="100">
+    <statement name="DO">
+      <block type="controls_if" id="checkProfitLoss" x="193" y="150">
+        <mutation else="1"></mutation>
+        <!-- Check if Total Profit >= Expected Profit -->
+        <value name="IF0">
+          <block type="logic_compare" id="profitCheck">
+            <field name="OP">GTE</field>
+            <value name="A">
+              <block type="variables_get" id="getTotalProfit">
+                <field name="VAR" id="Total Profit"/>
+              </block>
+            </value>
+            <value name="B">
+              <block type="variables_get" id="getExpectedProfit">
+                <field name="VAR" id="Expected Profit"/>
+              </block>
+            </value>
+          </block>
+        </value>
+        <statement name="DO0">
+          <!-- Notify if profit target is reached -->
+          <block type="notify" id="finalProfitNotify" x="193" y="200">
+            <field name="NOTIFICATION_TYPE">info</field>
+            <field name="NOTIFICATION_SOUND">silent</field>
+            <value name="MESSAGE">
+              <block type="text_join" id="notifyMessage">
+                <mutation items="2"></mutation>
+                <value name="ADD0">
+                  <block type="text" id="profitMessage">
+                    <field name="TEXT">Selesai, Alhamdullilah Total Profit: </field>
+                  </block>
+                </value>
+                <value name="ADD1">
+                  <block type="variables_get" id="getTotalProfitFinal">
+                    <field name="VAR" id="Total Profit"/>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+        </statement>
+        <statement name="ELSE">
+          <!-- Notify to trade again if profit target is not reached -->
+          <block type="notify" id="notYetProfitNotify" x="193" y="250">
+            <field name="NOTIFICATION_TYPE">warn</field>
+            <field name="NOTIFICATION_SOUND">silent</field>
+            <value name="MESSAGE">
+              <block type="text_join" id="notYetProfitMessage">
+                <mutation items="2"></mutation>
+                <value name="ADD0">
+                  <block type="text" id="tradeAgainMessage">
+                    <field name="TEXT">Total Profit: </field>
+                  </block>
+                </value>
+                <value name="ADD1">
+                  <block type="variables_get" id="getTotalProfitDuring">
+                    <field name="VAR" id="Total Profit"/>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+          <!-- Execute the trade with fixed amount -->
+          <next>
+            <block type="purchase" id="fixedTradePurchase" x="193" y="300">
+              <field name="PURCHASE_LIST">DIGITDIFF</field>
+            </block>
+          </next>
+        </statement>
+      </block>
+    </statement>
+  </block>
+
+  <!-- Before Purchase: Display Notification (Based on original 'LDP' logic) -->
+  <block type="before_purchase" id="strategy" x="193" y="2342">
+    <statement name="BEFOREPURCHASE_STACK">
+      <block type="notify" id="GJ!kF^CS=CuS#@:SFcr}">
+        <field name="NOTIFICATION_TYPE">warn</field>
+        <field name="NOTIFICATION_SOUND">silent</field>
+        <value name="MESSAGE">
+          <block type="text_join" id="1ngH#)ukT}qHr5*AK|gC">
+            <mutation items="2"></mutation>
+            <value name="ADD0">
+              <block type="text" id=":-Why%nQ~t9xdx(j0Uy-">
+                <field name="TEXT">Trading LDP :</field>
+              </block>
+            </value>
+            <value name="ADD1">
+              <block type="variables_get" id=",aMH}VZ--J)hvpO]e/I4">
+                <field name="VAR" id="*=Lx}P~%LSV1=#;Kmic9" variabletype="">LDP</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <next>
+          <block type="purchase" id="yppadLJHy@5Z:=,+hCP}">
+            <field name="PURCHASE_LIST">DIGITDIFF</field>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+
+  <!-- During Purchase: Additional Logic for Processing Trade (Not used in this case) -->
+  <block type="during_purchase" id="CIMQQ-mCQ$*|d@4B@.U$" x="193" y="2515"></block>
+
+  <!-- Adjusting JlhLos Variable (from original code to track losses) -->
+  <block type="variables_set" id="cx|tfHota1ee)Fu9+^Jv">
+    <field name="VAR" id="DTEwxR*@N}zc+mhK6H1T" variabletype="">JlhLos</field>
+    <value name="VALUE">
+      <block type="math_arithmetic" id="sm5aN/U|I)?rw`[/OAFS">
+        <field name="OP">ADD</field>
+        <value name="A">
+          <shadow type="math_number" id="ka8n8|Dugz,q5FkUjs`7">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="variables_get" id="Bq2st]ECPt7DVQd*9D^L">
+            <field name="VAR" id="DTEwxR*@N}zc+mhK6H1T" variabletype="">JlhLos</field>
+          </block>
+        </value>
+        <value name="B">
+          <shadow type="math_number" id="{JXdZCp2%s=sfO@yN:n}">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="math_number" id="4gSxsB({dW+zTeb`NgFS">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+      </block>
+    </value>
+  </block>
+</xml>
